@@ -11,6 +11,7 @@ import java.util.Scanner;
     private GameView gameView;
     private Scanner scanner = new Scanner(System.in);
     private int hiddenNumber;
+    private int stepCounter;
 
 
      GameController(GameModel gameModel, GameView gameView) {
@@ -31,6 +32,7 @@ import java.util.Scanner;
                     gameView.printMessage(GameView.EXIT);
                     break;
                 case "s":
+                    //сбросить пределы! вынести в метод модели
                     gameView.printMessage(GameView.START_LINE);
                     hiddenNumber = gameModel.getHiddenNumber(minRangeLimit,maxRangeLimit);
                     break;
@@ -46,23 +48,25 @@ import java.util.Scanner;
         int userNumber = Integer.parseInt(userInput);
 
         if ((userNumber<minRangeLimit) || (userNumber>maxRangeLimit)) {
-            gameView.printMessage(GameView.WRONG_INPUT);
+            gameView.printMessage(GameView.WRONG_NUMBER);
         }
 
         if(userNumber>hiddenNumber) {
-            gameView.printMessage(GameView.MORENUMBER);
             maxRangeLimit = userNumber;
+            stepCounter++;
+            gameView.printMessage(GameView.MORENUMBER);
         }
         else if(userNumber<hiddenNumber) {
-            gameView.printMessage(GameView.LESS_NUMBER);
             minRangeLimit = userNumber;
-
+            stepCounter++;
+            gameView.printMessage(GameView.LESS_NUMBER);
         }
         else if (userNumber == hiddenNumber) {
+            stepCounter++;
             gameView.printMessage(GameView.CONGRATULATION);
         }
         }
-        catch (NumberFormatException e) {gameView.printMessage(GameView.WRONG_INPUT);} //должно быть свое сообщение!
+        catch (NumberFormatException e) {gameView.printMessage(GameView.OTHER_SYMBOL);}
         }
     }
 
