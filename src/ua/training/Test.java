@@ -11,12 +11,12 @@ public class Test {
         this.gameModel = new GameModel();
     }
 
-    void testRandom() {
-        int array[] = new int[iterations];
-
-        for (int i = iterations-1; i>=0; i--) {
-            array[i] = gameModel.getNumber(0, 100);
-        }
-
-    }
+//    void testRandom() {
+//        int array[] = new int[iterations];
+//
+//        for (int i = iterations-1; i>=0; i--) {
+//            array[i] = gameModel.getHiddenNumber(0, 100);
+//        }
+//
+//    }
 }

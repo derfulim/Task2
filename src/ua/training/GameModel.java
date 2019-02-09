@@ -8,7 +8,7 @@ public class GameModel {
      * @param maxRangeLimit
      * @return
      */
-    protected int getNumber(int minRangeLimit, int maxRangeLimit) {
+    protected int getHiddenNumber(int minRangeLimit, int maxRangeLimit) {
         int range = maxRangeLimit - minRangeLimit;
         return (int)(Math.random() * ++range) + minRangeLimit;
     }
