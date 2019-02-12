@@ -2,78 +2,66 @@ package ua.training;
 
 import java.util.Scanner;
 
-/**
- *
- */
 
- class GameController {
-    private int hiddenNumber;
-    private int stepCounter;
-    private boolean isGameOver = false;
-    private boolean isNewGameStarted = false;
+ class GameController implements GlobalConstants {
+
     private GameModel gameModel;
     private GameView gameView;
-    private Scanner scanner = new Scanner(System.in);
-
-
+    private int userValue = 0;
+    private Scanner sc = new Scanner(System.in);
 
     GameController(GameModel gameModel, GameView gameView) {
         this.gameModel = gameModel;
         this.gameView = gameView;
     }
 
-     void launch() {
-        gameView.printMessage(GameView.GREETING);
+    void launch () {
+        boolean isValueWrong = true;
 
-        while(!isGameOver) {
-            processUserInput(scanner.nextLine());
+        gameModel.setPrimaryBarriers(GlobalConstants.MIN_BARRIER, GlobalConstants.MAX_BARRIER);
+        gameView.printRange(gameModel.getMinBarrier(), gameModel.getMaxBarrier());
+        gameModel.setSecretValue();
+
+        while (isValueWrong) {
+            userValue = processUserInput(sc);
+            isValueWrong = gameModel.checkUserValue(userValue);
+
+            if (userValue == gameModel.getMinBarrier()) {
+                gameView.printMessage(GameView.LESS_THAN_SECRET);
+            }
+            else if (userValue == gameModel.getMaxBarrier()){
+                gameView.printMessage(GameView.GREATER_THAN_SECRET);
             }
         }
 
-        private void processUserInput(String userInput) {
+            gameView.printMessage(GameView.CONGRATULATION + userValue);
+            gameView.printHistory(gameModel.getHistory());
+    }
 
-         if (userInput.equals(GameView.START_GAME)) {
-             startNewGame();
-         }
-         else if (userInput.equals(GameView.QUIT_GAME)) {
-             finishGame();
-         }
-         else if (isNewGameStarted) checkUserNumber(userInput);
+
+
+     private int processUserInput(Scanner sc) {
+
+        while( true ) {
+            // check int - value
+            while (!sc.hasNextInt()) {
+                gameView.printMessage(GameView.WRONG_INPUT_DATA);
+                gameView.printRange(gameModel.getMinBarrier(),gameModel.getMaxBarrier());
+                sc.next();
+            }
+            // check value in diapason
+            if ((userValue = sc.nextInt()) < gameModel.getMinBarrier() ||
+                    userValue > gameModel.getMaxBarrier()) {
+                gameView.printMessage(GameView.WRONG_RANGE_DATA);
+                gameView.printRange(gameModel.getMinBarrier(),gameModel.getMaxBarrier());
+                continue ;
+            }
+            break;
         }
+        return userValue;
+    }
 
-        private void startNewGame() {
-            isNewGameStarted = true;
-            stepCounter = 0;
-            gameView.printMessage(GameView.START_LINE);
-            hiddenNumber = gameModel.getHiddenNumber();
-         }
 
-        private void finishGame(){
-         isNewGameStarted = false;
-         isGameOver = true;
-        gameView.printMessage(GameView.EXIT);}
-
-        private void checkUserNumber(String userInput) {
-         try {
-            int userNumber = Integer.parseInt(userInput);
-
-            if ((userNumber<gameModel.getMinRangeLimit()) || (userNumber>gameModel.getMaxRangeLimit())) {
-                gameView.printMessage(GameView.WRONG_NUMBER);
-            }
-            else if(userNumber>hiddenNumber) {
-                stepCounter++;
-                gameView.printAdvice(GameView.MORE_NUMBER);
-            }
-            else if(userNumber<hiddenNumber) {
-                stepCounter++;
-                gameView.printAdvice(GameView.LESS_NUMBER);
-            }
-            else if (userNumber == hiddenNumber) {
-                stepCounter++;
-                gameView.printUserStat(stepCounter, userNumber);
-            }
-        }
-            catch (NumberFormatException e) {gameView.printMessage(GameView.OTHER_SYMBOL);}}
  }
 
 

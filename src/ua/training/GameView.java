@@ -1,19 +1,20 @@
 package ua.training;
 
-import java.util.Date;
+import java.util.List;
 
 class GameView {
 
-     static final String GREETING = "****************************** Угадай число! *****************************\n" +
-             "Чтобы начать/перезапустить игру нажмите s, чтобы закончить игру нажмите q.";
-     static final String START_LINE = "Введите целое положительное число  от 0 до 100.";    //добавить форматирование строки для пределов
-     static final String WRONG_NUMBER = "Ваше число не входит в диапазон, введите другое число.";
-     static final String OTHER_SYMBOL = "Вы ввели вместо числа другой символ. Пожалуйста, введите ваше число!";
-     static final String LESS_NUMBER = "меньше";
-     static final String MORE_NUMBER = "больше";
-     static final String EXIT = "Вы вышли из игры.";
-     static final String START_GAME = "s";
-     static final String QUIT_GAME= "q";
+     private static final String INPUT_INT_DATA = "INPUT INT VALUE IN RANGE ";
+     private static final String LEFT_BRACKET = "[";
+     private static final String RIGHT_BRACKET = "]";
+     private static final String SEPARATOR = " ";
+     static final String WRONG_INPUT_DATA = "YOU TYPED ANOTHER SYMBOL.";
+     static final String WRONG_RANGE_DATA = "YOUR VALUE IS NOT IN DIAPASON. ";
+     static final String LESS_THAN_SECRET = "YOUR VALUE IS LESS THAN SECRET.";
+     static final String GREATER_THAN_SECRET = "YOUR VALUE IS GREATER THAN SECRET.";
+     static final String CONGRATULATION = "CONGRATULATION! YOU GUESSED THE NUMBER ";
+     private static final String HISTORY = "YOUR HISTORY: ";
+
 
 
 
@@ -21,15 +22,19 @@ class GameView {
         System.out.println(message);
     }
 
-     void printAdvice(String tolerance){
-         System.out.println("Ваше число " + tolerance + " загаданного. Делайте следующий ход.");
-     }
+    void printRange(int minBarrier, int maxBarrier) {
+        System.out.println(INPUT_INT_DATA + LEFT_BRACKET + minBarrier + SEPARATOR + maxBarrier + RIGHT_BRACKET);
+    }
 
-     void printUserStat(int steps, int userNumber){
-         System.out.println("Поздравляем! Вы угадали число " + userNumber + " за " + steps +
-                 " хода/ходов. Чтобы начать новую игру введите " + START_GAME +
-                 ", чтобы выйти из игры нажмите " + QUIT_GAME + ".");
-     }
+    void printHistory(List<Integer> history) {
+        System.out.print(HISTORY);
+        for (Integer element:history
+             ) {
+            System.out.print(element.toString() + " ");
+        }
+    }
+
+
 
 
 
